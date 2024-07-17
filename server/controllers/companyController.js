@@ -1,14 +1,15 @@
-const companyModel = require('../models/companyModel');
+const axios = require('axios');
 
-const getAllCompanies = async (req, res, next) => {
+const API_BASE_URL = 'https://json-server.bytexl.app';
+
+const getCompanies = async (req, res) => {
   try {
-    const companies = await companyModel.getAllCompanies();
-    res.json(companies);
+    const response = await axios.get(`${API_BASE_URL}/companies`);
+    res.json(response.data);
   } catch (error) {
-    next(error);
+    console.error('Error fetching companies:', error);
+    res.status(500).json({ error: 'Error fetching companies' });
   }
 };
 
-module.exports = {
-  getAllCompanies,
-};
+module.exports = { getCompanies };
